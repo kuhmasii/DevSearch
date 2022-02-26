@@ -1,0 +1,68 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %} Dev's Developers | {{request.META.HTTP_HOST }}{% endblock %}
+
+{% block content %}
+  <!-- Main Section -->
+  <main class="home">
+    <section class="hero-section text-center">
+      <div class="container container--narrow">
+        <div class="hero-section__box">
+          <h2>CONNECT WITH <span>DEVELOPERS</span></h2>
+          <h2>FROM AROUND THE WORLD</h2>
+        </div>
+
+        <div class="hero-section__search">
+          <form class="form" action="{% url 'userapp:profiles' %}" method="get">
+            <div class="form__field">
+              <label for="formInput#search">Search Developers </label>
+              <input class="input input--text" id="formInput#search" type="text" name="q"
+                placeholder="Search by developer name" />
+            </div>
+
+            <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="devlist">
+      <div class="container">
+        <div class="grid grid--three">
+          {% for prof in profiles %}
+          <div class="column card">
+            <div class="dev">
+              <a href="{% url 'userapp:userProfile' prof.user.username %}" class="card__body">
+                <div class="dev__profile">
+                  <img class="avatar avatar--md" src="{{ prof.profileURL }}" alt="image" />
+                  <div class="dev__meta">
+                    <h3>{{ prof.user.get_full_name }}</h3>
+                    <h5>{{ prof.short_intro| slice:'60' }}</h5>
+                  </div>
+                </div>
+                <p class="dev__info">
+                  {{ prof.bio | slice:'100' }}
+                </p>
+                <div class="dev__skills">
+                  {% for skill in prof.get_skills %}
+                  <span class="tag tag--pill tag--main">
+                    <small>{{ skill.name }}</small>
+                  </span>
+                  {% endfor %}
+                </div>
+              </a>
+            </div>
+          </div>
+          {% empty %}
+          <div>
+            <h3>Opps! No query available for the item searched...</h3>
+          </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </section>
+    {% include 'pagination.html' with pages=profiles %}
+  </main>
+{% endblock content %}

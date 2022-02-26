@@ -1,0 +1,16 @@
+<div class="pagination">
+    <ul class="container">
+      
+      {% if pages.has_previous %}
+      <li><a href="?page=1" class="btn btn--sub">First</a></li>
+      <li><a href="?page={{ pages.previous_page_number }}" class="btn">&#10094; Prev</a></li>
+      {% endif %}
+
+      <li class='btn'>page {{ pages.number }} of {{ pages.paginator.num_pages }} </li>
+    
+      {% if pages.has_next %}
+      <li><a href="?page={{ pages.next_page_number }}" class="btn">Next &#10095;</a></li>
+      <li><a href="?page={{ pages.paginator.num_pages }}" class="btn btn--sub">Last</a></li>
+      {% endif %}
+    </ul>
+  </div>

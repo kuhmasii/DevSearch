@@ -1,4 +1,3 @@
-import email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
 from .models import Profile, Skill
@@ -15,16 +14,11 @@ class RegistrationForm(forms.Form):
     password1 = forms.CharField(widget=forms.PasswordInput,label='Password', required=True)
     password2 = forms.CharField(widget=forms.PasswordInput,label='Confirm Password', required=True )
 
-    # fields = (first_name, last_name, username, email1, email2, password1, password2)
-    # for field_ in fields:
-    #     field_.widget.attrs.update({'class': 'input'})
-    first_name.widget.attrs.update({'class':'input'})
-    last_name.widget.attrs.update({'class':'input'})
-    username.widget.attrs.update({'class':'input'})
-    email1.widget.attrs.update({'class':'input'})
-    email2.widget.attrs.update({'class':'input'})
-    password1.widget.attrs.update({'class':'input'})
-    password2.widget.attrs.update({'class':'input'})
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})
 
     def clean_email2(self):
         email = self.cleaned_data.get("email1")
@@ -51,8 +45,6 @@ class RegistrationForm(forms.Form):
             raise ValidationError("This Username is already taken")
         return username
 
- 
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -64,7 +56,6 @@ class ProfileForm(forms.ModelForm):
         for name, field in self.fields.items():
             field.widget.attrs.update({'class': 'input'})
 
-
 class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
@@ -75,3 +66,37 @@ class SkillForm(forms.ModelForm):
 
         for name,field in self.fields.items():
             field.widget.attrs.update({'class':'input'})
+
+class ContactForm(forms.Form):
+
+    name = forms.CharField(max_length=120)
+    email = forms.EmailField()
+    subject = forms.CharField(max_length=70)
+    message = forms.CharField(widget=forms.Textarea)
+
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+
+        for x, y in self.fields.items():
+            y.widget.attrs.update({'class': 'input'})
+
+
+    def get_details(self):
+        """
+            Method that returns formatted
+            information :return: subject, message
+        """
+
+        clean_data = super().clean()
+        
+        name = clean_data.get('name').strip()
+        from_email = clean_data.get('email')
+        subject = clean_data.get('subject')
+
+        msg = f'{name} with email {from_email} said:'
+        msg += f'\n"{subject}"\n\n'
+        msg += clean_data.get('message')
+
+        return subject, msg
+

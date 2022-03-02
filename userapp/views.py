@@ -1,12 +1,21 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
+
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegistrationForm, ProfileForm, SkillForm
-from django.contrib import messages
 from django.contrib.auth import get_user_model, get_user
+
+
+from .forms import RegistrationForm, ProfileForm, SkillForm, ContactForm
 from .models import Profile, Skill 
 from newapp.models import Project
 from .utils import search, userappPaginator
+
+
+from django.conf import settings
+from django.contrib import messages
+from django.core.mail import send_mail
+
 
 User = get_user_model()
 
@@ -169,3 +178,24 @@ def signOut(request):
     logout(request)
     messages.info(request, 'User was logged out!')
     return redirect("newapp:index")
+
+def sendMail(request):
+    contact_form = ContactForm()
+
+    if request.method == 'POST':
+        contact_form = ContactForm(request.POST)
+        
+        if contact_form.is_valid():
+            subject, message = contact_form.get_details()
+ 
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email="abc@gmail.com",
+                recipient_list=['abcd@gmail.com'],
+            )
+            return HttpResponse("Email sent successfully")
+
+
+    context = {'form':contact_form}
+    return render(request, 'contact.html', context)

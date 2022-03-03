@@ -19,13 +19,12 @@ urlpatterns = [
     path('skill/', views.create_skill, name='create_skill'),
     path('skill/update/<str:skill_id>/', views.update_skill, name='update_skill'),
     path('skill/delete/<str:skill_id>/', views.delete_skill, name='delete_skill'),
-
-    # contacting
-    path('contact/', views.sendMail, name='sendMail'),
-
+  
     # profiles
     path('profile/',views.profiles, name="profiles"),
     path("<str:username>/", views.userProfile, name='userProfile'),
-
-
+    
+    # contacting
+    path('contact/<str:email_id>/', views.sendMail, name='sendMail'),
+    
 ]

@@ -14,7 +14,7 @@ from .utils import search, userappPaginator
 
 from django.conf import settings
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, get_connection
 
 
 User = get_user_model()
@@ -179,23 +179,25 @@ def signOut(request):
     messages.info(request, 'User was logged out!')
     return redirect("newapp:index")
 
-def sendMail(request):
+def sendMail(request, email_id):
+    profile = Profile.objects.get(id=email_id)
+    recipient_email = profile.user.email
+    
     contact_form = ContactForm()
 
     if request.method == 'POST':
         contact_form = ContactForm(request.POST)
-        
         if contact_form.is_valid():
             subject, message = contact_form.get_details()
- 
             send_mail(
                 subject=subject,
                 message=message,
-                from_email="abc@gmail.com",
-                recipient_list=['abcd@gmail.com'],
+                from_email= settings.EMAIL_HOST_USER,
+                recipient_list=[recipient_email],
+                fail_silently=False,
             )
-            return HttpResponse("Email sent successfully")
-
+            messages.success(request, 'Email was successfully sent.')
+            return redirect('userapp:profiles')
 
     context = {'form':contact_form}
     return render(request, 'contact.html', context)

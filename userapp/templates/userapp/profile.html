@@ -63,16 +63,9 @@
                   {{ skill.description }}
                 </p>
               </div>
+              {% empty %}
+              <h4>No Query for Skills</h4>
               {% endfor %}
-              <h3 class="devInfo__subtitle">Other Skills</h3>
-              
-              <div class="devInfo__otherSkills">
-                {% for skill in profile.get_skills %}
-                <span class="tag tag--pill tag--sub tag--lg">
-                  <small>{{ skill.name }}</small>
-                </span>
-                {% endfor %}
-              </div>
             </div>
           </div>
           <div class="devInfo">
@@ -101,6 +94,8 @@
                   </a>
                 </div>
               </div>
+              {% empty %}
+              <h4>No Query for projects</h4>
               {% endfor %}
             </div>
           </div>

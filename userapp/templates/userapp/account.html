@@ -55,7 +55,7 @@
             <h3 class="settings__title">Skills</h3>
             <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'userapp:create_skill' %}"><i class="im im-plus"></i> Add Skill</a>
           </div>
-
+        
           <table class="settings__table">
             {% for skill in profile.get_skills %}
             <tr>
@@ -71,6 +71,8 @@
                   Delete</a>
               </td>
             </tr>
+            {% empty %}
+            <h4>No Query for skills</h4>
             {% endfor %}
           </table>
 
@@ -78,7 +80,7 @@
             <h3 class="settings__title">Projects</h3>
             <a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'newapp:create_project' %}"><i class="im im-plus"></i> Add Project</a>
           </div>
-
+          
           <table class="settings__table">
             {% for project in profile.get_projects %}
             <tr>
@@ -97,6 +99,8 @@
                   Delete</a>
               </td>
             </tr>
+            {% empty %}
+            <h4>No Query for projects</h4>
             {% endfor %}
           </table>
         </div>

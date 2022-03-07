@@ -1,4 +1,3 @@
-from argparse import RawDescriptionHelpFormatter
 from userapp.models import Profile
 
 from django.db import models

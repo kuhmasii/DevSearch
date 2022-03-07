@@ -99,6 +99,3 @@ def delete_project(request, detail_id):
         return redirect("userapp:dashboard")
 
     return render(request, 'delete.html', {"obj":project})
-
-    # project such excess rabbit measure earn 
-    # original habit chair become swarm family

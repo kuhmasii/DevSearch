@@ -32,7 +32,7 @@ def register(request):
             ins = [form.cleaned_data.get(x.name) for x in form]
             # Be careful in the nearest future a change in the userapp.forms variables can affect 
             # the way user's information is been saved
-            user = User.objects.create(first_name=ins[0].upper(), last_name=ins[1].upper(),
+            user = User(first_name=ins[0].upper(), last_name=ins[1].upper(),
                     username=ins[2], email=ins[4], password=ins[6])
             user.set_password(user.password)
             user.save()
@@ -196,7 +196,7 @@ def sendMail(request, email_id):
                 recipient_list=[recipient_email],
                 fail_silently=False,
             )
-            messages.success(request, 'Email was successfully sent.')
+            messages.success(request, f'Email was successfully sent to {recipient_email}.')
             return redirect('userapp:profiles')
 
     context = {'form':contact_form}

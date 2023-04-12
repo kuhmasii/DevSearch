@@ -97,15 +97,6 @@ class ProjectTests(TestCase):
         url = ins.featuredImageUrl
         self.assertEqual(url, '/media/mypics/default.jpg')
 
-	# def test_featuredImageUrl_without_value(self):
-	# 	"""
-	# 	project_image method should return an empty string
-	# 	"""
-	# 	ins = Project.objects.get(title__iexact='Testing Database')
-	# 	url = ins.featuredImageUrl
-	# 	print(url)
-	# 	self.assertFalse(url)
-
 class TagTests(TestCase):
 
 	def setUp(self):
